@@ -45,7 +45,7 @@ function executeUserAction(action) {
                 } else {
                     console.log("department has been created")
                 }
-                init()
+                menu()
             });
         })
     } else if (action === "view all departments") {
@@ -58,7 +58,7 @@ function executeUserAction(action) {
                 printTable(result)
 
             }
-            init()
+            menu()
         })
     } else if (action === "add a role") {
         inquirer.prompt(
@@ -84,88 +84,114 @@ function executeUserAction(action) {
             let salary = answers.roleSalary
             let department = answers.roleDepartment
             let query = "insert into role (title,salary,department_id) values (?,?,?)"
-            connection.query(query, [title,salary,department], err => {
+            connection.query(query, [title, salary, department], err => {
 
                 if (err) {
                     console.log(err)
                 } else {
                     console.log("role has been created")
                 }
-                init()
+                menu()
             });
         })
-    }else if (action === "view all roles") {
-    let query = "select * from role"
-    connection.query(query, (err, result) => {
-        if (err) {
-            console.log(err)
-
-        } else {
-            printTable(result)
-
-        }
-        init()
-    })
-
-} else if (action === "add an employee") {
-    inquirer.prompt(
-        [
-            {
-                type: "input",
-                name: "employeeFirst",
-                message: "What is first name of the employee?"
-            },
-            {
-                type: "input",
-                name: "employeeLast",
-                message: "What is the last name of the employee?"
-            },
-            {
-                type: "input",
-                name: "employeeRole",
-                message: "What is the role of the employee?"
-            },
-            {
-                type: "input",
-                name: "employeeManager",
-                message: "Who is the employee manager?"
-            }
-        ]
-    ).then(answers => {
-        let first = answers.employeeFirst
-        let last = answers.employeeLast
-        let role = answers.employeeRole
-        let manager = answers.employeeManager
-        let query = "insert into employee (first_name,last_name,role_id,manger_id) values (?,?,?,?)"
-        connection.query(query, [first,last,role,manager], err => {
-
+    } else if (action === "view all roles") {
+        let query = "select * from role"
+        connection.query(query, (err, result) => {
             if (err) {
                 console.log(err)
+
             } else {
-                console.log("employee has been created")
+                printTable(result)
+
             }
-            init()
-        });
-    })
-}else if (action === "view all employees") {
-let query = "select * from employee"
-connection.query(query, (err, result) => {
-    if (err) {
-        console.log(err)
+            menu()
+        })
 
-    } else {
-        printTable(result)
+    } else if (action === "add an employee") {
+        inquirer.prompt(
+            [
+                {
+                    type: "input",
+                    name: "employeeFirst",
+                    message: "What is first name of the employee?"
+                },
+                {
+                    type: "input",
+                    name: "employeeLast",
+                    message: "What is the last name of the employee?"
+                },
+                {
+                    type: "input",
+                    name: "employeeRole",
+                    message: "What is the role of the employee?"
+                },
+                {
+                    type: "input",
+                    name: "employeeManager",
+                    message: "Who is the employee manager?"
+                }
+            ]
+        ).then(answers => {
+            let first = answers.employeeFirst
+            let last = answers.employeeLast
+            let role = answers.employeeRole
+            let manager = answers.employeeManager
+            let query = "insert into employee (first_name,last_name,role_id,manger_id) values (?,?,?,?)"
+            connection.query(query, [first, last, role, manager], err => {
 
+                if (err) {
+                    console.log(err)
+                } else {
+                    console.log("employee has been created")
+                }
+                menu()
+            });
+        })
+    } else if (action === "view all employees") {
+        let query = "select * from employee"
+        connection.query(query, (err, result) => {
+            if (err) {
+                console.log(err)
+
+            } else {
+                printTable(result)
+
+            }
+            menu()
+        })
+
+
+    } else if (action === "update an employee role") {
+        inquirer.prompt(
+            [
+                {
+                    type: "input",
+                    name: "id",
+                    message: "What is employee id?"
+                },
+                {
+                    type: "input",
+                    name: "role",
+                    message: "What is the new employee role?"
+                },
+            ]).then(answers => {
+                let id = answers.id
+                let role = answers.role
+                let query = "UPDATE employee SET role_id = ? WHERE id = ?"
+                connection.query(query, [role, id], err => {
+                    if (err) {
+                        console.log(err)
+                    } else {
+                        console.log("employee has been updated")
+                    }
+                    menu()
+                });
+            })
     }
-    init()
-})
-
-    
-}
 }
 
 // TODO: Create a function to initialize app
-function init() {
+function menu() {
     inquirer.prompt(questions)
 
         .then((answers) => {
@@ -181,5 +207,5 @@ function init() {
 }
 
 // Function call to initialize app
-init();
+menu();
 

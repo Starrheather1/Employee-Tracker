@@ -136,7 +136,7 @@ function executeUserAction(action) {
         let last = answers.employeeLast
         let role = answers.employeeRole
         let manager = answers.employeeManager
-        let query = "insert into employee (first,last,role,manager_id) values (?,?,?,?)"
+        let query = "insert into employee (first_name,last_name,role_id,manger_id) values (?,?,?,?)"
         connection.query(query, [first,last,role,manager], err => {
 
             if (err) {

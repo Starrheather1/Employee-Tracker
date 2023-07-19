@@ -1,3 +1,5 @@
+const mysql = require('mysql2');
+
 function initializeDatabase() {
 
     createTables();
